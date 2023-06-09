@@ -95,27 +95,23 @@ app.get('/search', function (req, res) {
 })
 
 app.get('/api/movie', function (req, res) {
-  db.collection('movies').find().toArray(function (err, result) {
-    const data2 = JSON.stringify(result, null, 2);
-    res.render('api.ejs', { data: data2 })
-  })
+
+  const category = Number(req.query.year) ? Number(req.query.year) : '';
+  const countrie = req.query.countrie ? req.query.countrie : '';
+
+  if (category == '' || countrie == '') {
+    db.collection('movies').find({ $or: [{ year: category }, { countries: countrie }] }).limit(100).toArray(function (err, result) {
+      const data2 = JSON.stringify(result, null, 2);
+      res.render('api.ejs', { data: data2 })
+    })
+  } else {
+    db.collection('movies').find({ $and: [{ year: category }, { countries: countrie }] }).limit(100).toArray(function (err, result) {
+      const data2 = JSON.stringify(result, null, 2);
+      res.render('api.ejs', { data: data2 })
+    })
+  }
 })
 
-app.get('/api/movie/:year', function (req, res) {
-  const category = Number(req.params.year) 
-  db.collection('movies').find({ year: category }).toArray(function (err, result) {
-    const data2 = JSON.stringify(result, null, 2);
-    res.render('api.ejs', { data: data2 })
-  })
-})
-app.get('/api/movie/:year:countrie', function (req, res) {
-  const category = Number(req.params.year) ?? 0
-  const countrie = req.params.countrie.toUpperCase();
-  db.collection('movies').find({ year: category, countries: countrie }).toArray(function (err, result) {
-    const data2 = JSON.stringify(result, null, 2);
-    res.render('api.ejs', { data: data2 })
-  })
-})
 
 // app.use(express.static(path.join(__dirname, 'Ottugi/dist')))
 // app.get('/', function(req, res){
