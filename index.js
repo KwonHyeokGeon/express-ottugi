@@ -95,11 +95,14 @@ app.get('/search', function (req, res) {
 })
 
 app.get('/api/movie', function (req, res) {
-
   const category = Number(req.query.year) ? Number(req.query.year) : '';
   const countrie = req.query.countrie ? req.query.countrie : '';
-
-  if (category == '' || countrie == '') {
+  if (req.originalUrl == '/api/movie') {
+    db.collection('movies').find().limit(100).toArray(function (err, result) {
+      const data2 = JSON.stringify(result, null, 2);
+      res.render('api.ejs', { data: data2 })
+    })
+  } else if (category == '' || countrie == '') {
     db.collection('movies').find({ $or: [{ year: category }, { countries: countrie }] }).limit(100).toArray(function (err, result) {
       const data2 = JSON.stringify(result, null, 2);
       res.render('api.ejs', { data: data2 })
