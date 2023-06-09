@@ -97,19 +97,22 @@ app.get('/search', function (req, res) {
 app.get('/api/movie', function (req, res) {
   const category = Number(req.query.year) ? Number(req.query.year) : '';
   const countrie = req.query.countrie ? req.query.countrie : '';
+  const limit = 10;
+  const page = Number(req.query.page) ? Number(req.query.page) * limit : 1;
+
   if (req.originalUrl == '/api/movie') {
-    db.collection('movies').find().limit(100).toArray(function (err, result) {
+    db.collection('movies').find().limit(limit).skip(page).toArray(function (err, result) {
       const data2 = JSON.stringify(result, null, 2);
       res.render('api.ejs', { data: data2 })
     })
   } else if (category == '' || countrie == '') {
-    db.collection('movies').find({ $or: [{ year: category }, { countries: countrie }] }).limit(100).toArray(function (err, result) {
+    db.collection('movies').find({ $or: [{ year: category }, { countries: countrie }] }).limit(limit).skip(2).toArray(function (err, result) {
       const data2 = JSON.stringify(result, null, 2);
       res.render('api.ejs', { data: data2 })
     })
   } else {
-    db.collection('movies').find({ $and: [{ year: category }, { countries: countrie }] }).limit(100).toArray(function (err, result) {
-      const data2 = JSON.stringify(result, null, 2);
+    db.collection('movies').find({ $and: [{ year: category }, { countries: countrie }] }).limit(limit).skip(page).toArray(function (err, result) {
+      const data2 = JSON.stringify(result, null, page);
       res.render('api.ejs', { data: data2 })
     })
   }
