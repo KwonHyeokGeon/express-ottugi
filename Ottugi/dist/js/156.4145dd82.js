@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkottogi"]=self["webpackChunkottogi"]||[]).push([[156],{3156:function(t,e,n){n.r(e),n.d(e,{default:function(){return f}});var a=n(3396);const s={class:"max-w-7xl mx-auto text-center mt-20"},c=(0,a._)("p",{class:"sm:text-8xl text-4xl mb-20"},"상세페이지",-1),r=(0,a._)("p",{class:"text-xl"},"준비중",-1),l=[c,r];function u(t,e,n,c,r,u){return(0,a.wg)(),(0,a.iD)("div",s,l)}var o={name:"DetailPage"},x=n(89);const i=(0,x.Z)(o,[["render",u]]);var f=i}}]);
+//# sourceMappingURL=156.4145dd82.js.map
