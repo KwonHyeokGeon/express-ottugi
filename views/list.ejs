@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    function Event(e, id, formId) {
+      if (e == 'edit') {
+        alert('수정')
+        document.querySelector("#form" + formId).setAttribute("action", '/' + e + '/' + id)
+      } else {
+        document.querySelector("#form" + formId).setAttribute("action", '/' + e)
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div>
+    <form action="/search" method="get" id="search">
+      <input type="text" placeholder="검색어를 입력해주세요" name="value">
+    </form>
+  </div>
+  <% for(let i=0; i<data.length; i++){%>
+    <form action="" method="post" id="form<%=i%>">
+      <div style="display: flex;">
+        <p>
+          <%= data.length - i %>
+        </p>
+        <p><input type="text" value="<%= data[i].name %>" readonly name="name"></p>
+        <p><input type="text" value="<%= data[i].age %>" readonly name="age"></p>
+        <input type="hidden" value="<%= data[i]._id %>" name="id">
+        <button type="submit" onClick="Event('edit', '<%=data[i]._id %>', '<%= i%>')">수정</button>
+        <button type="submit" onClick="Event('delete?_method=DELETE', '<%=data[i]._id %>', '<%= i%>')">삭제</button>
+      </div>
+    </form>
+    <%} %>
+</body>
+
+</html>
